@@ -1,17 +1,18 @@
 " Some functions
 
-let s:PLUGIN = maktaba#plugin#Get('Please')
+let s:PLUGIN = maktaba#plugin#Get('please-vim')
 
 ""
 " @public
 " Execute a please command
 " Meant to be invoked by the |:Please| command
 ""
-function! please#Run(arguments, ...) abort
-	call s:PLUGIN.logger.info(
+function! please#Run(arguments) abort
+	call s:PLUGIN.logger.Info(
 				\ 'Invoking please with arguments "%s"',
 				\ string(a:arguments))
 	call s:Autowrite()
+	let l:executable = ['please']
 	let l:syscall = maktaba#syscall#Create([l:executable] + a:arguments)
 	call l:syscall.CallForeground(1, 0)
 endfunction
