@@ -5,7 +5,9 @@
 " Meant to be invoked by the |:Please| command
 ""
 function! please#Run(arguments, ...) abort
-"	echo 'Invoking please with arguments "%s"', string(a:arguments))
+	call s:PLUGIN.logger.info(
+				\ 'Invoking please with arguments "%s"',
+				\ string(a:arguments))
 	call s:Autowrite()
 	call l:syscall.CallForeground(1, 0)
 endfunction
