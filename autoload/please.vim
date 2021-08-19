@@ -9,6 +9,7 @@ function! please#Run(arguments, ...) abort
 				\ 'Invoking please with arguments "%s"',
 				\ string(a:arguments))
 	call s:Autowrite()
+	let l:syscall = maktaba#syscall#Create([l:executable] + a:arguments)
 	call l:syscall.CallForeground(1, 0)
 endfunction
 
