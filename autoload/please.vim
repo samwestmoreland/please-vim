@@ -13,10 +13,19 @@ function! please#Run(arguments) abort
 				\ string(a:arguments))
 	call s:Autowrite()
 	let l:executable = ['please']
-	echo 'type of l:executable is ' type(l:executable)
-	echo 'type of a:arguments is ' type(a:arguments)
+	call s:PLUGIN.logger.Debug('type of l:executable is "%s"', type(l:executable))
+	call s:PLUGIN.logger.Debug('type of a:arguments is "%s"', type(a:arguments))
 	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
 	call l:syscall.CallForeground(1, 0)
+endfunction
+
+function! please#Clean(arguments) abort
+	call s:PLUGIN.logger.Info(
+				\ 'Doing a please clean with arguments "%s"',
+				\ string(a:arguments))
+	let l:executable = ['please clean']
+	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
+	call l:syscall.Call(1, 0)
 endfunction
 
 " Write files before calling Please
