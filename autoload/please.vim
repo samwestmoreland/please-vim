@@ -13,6 +13,7 @@ function! please#Run(arguments) abort
 				\ string(a:arguments))
 	call s:Autowrite()
 	let l:executable = ['please']
+	echo type(a:arguments)
 	let l:syscall = maktaba#syscall#Create(l:executable + [a:arguments])
 	echo l:syscall.GetCommand()
 	call l:syscall.CallForeground(1, 0)
