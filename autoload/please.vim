@@ -1,6 +1,6 @@
 " Some functions
 
-let s:PLUGIN = maktaba#plugin#Get('please')
+let s:PLUGIN = maktaba#plugin#Get('Please')
 
 ""
 " @public
