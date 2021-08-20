@@ -23,7 +23,7 @@ function! please#Clean(arguments) abort
 	call s:PLUGIN.logger.Info(
 				\ 'Doing a please clean with arguments "%s"',
 				\ string(a:arguments))
-	let l:executable = ['please clean']
+	let l:executable = ['please', 'clean']
 	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
 	call l:syscall.Call(1, 0)
 endfunction
