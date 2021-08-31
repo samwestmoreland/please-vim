@@ -1,6 +1,7 @@
 " Some functions
 
 let s:PLUGIN = maktaba#plugin#Get('please-vim')
+let g:please_vim_logger = maktaba#log#Logger('PLEASEVIMFILE')
 
 ""
 " @public
@@ -19,13 +20,22 @@ function! please#Run(arguments) abort
 	call l:syscall.CallForeground(1, 0)
 endfunction
 
-function! please#Clean(arguments) abort
+function! please#Clean(arguments, ...) abort
 	call s:PLUGIN.logger.Info(
 				\ 'Doing a please clean with arguments "%s"',
 				\ string(a:arguments))
 	let l:executable = ['please', 'clean']
 	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
 	call l:syscall.Call(1, 0)
+endfunction
+
+" please build the target under the cursor
+function! please#BuildThis(arguments, ...) abort
+	let l:wordUnderCursor = expand("<cword>")
+	let l:currentFile = expand("<sfile>")
+	let l:buildTarget = l:currentFile . l:wordUnderCursor
+
+	call please#Run(l:buildTarget)
 endfunction
 
 " Write files before calling Please
