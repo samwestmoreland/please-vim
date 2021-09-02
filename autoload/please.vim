@@ -35,6 +35,9 @@ function! please#BuildThis(arguments, ...) abort
 	let l:currentFile = expand("<sfile>")
 	let l:buildTarget = l:currentFile . l:wordUnderCursor
 
+	s:PLUGIN.logger.Info('Got build target "%s"',
+				\ string(l:buildTarget))
+
 	call please#Run(l:buildTarget)
 endfunction
 
