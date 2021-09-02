@@ -31,11 +31,11 @@ endfunction
 
 " please build the target under the cursor
 function! please#BuildThis(arguments, ...) abort
-	let l:wordUnderCursor = expand("<cword>")
-	let l:currentFile = expand("<sfile>")
+	let l:wordUnderCursor = expand('<cword>')
+	let l:currentFile = expand('<sfile>')
 	let l:buildTarget = l:currentFile . l:wordUnderCursor
 
-	s:PLUGIN.logger.Info('Got build target "%s"',
+	call s:PLUGIN.logger.Info('Got build target "%s"',
 				\ string(l:buildTarget))
 
 	call please#Run(l:buildTarget)
