@@ -8,7 +8,7 @@ let g:please_vim_logger = maktaba#log#Logger('PLEASEVIMFILE')
 " Execute a please command
 " Meant to be invoked by the |:Please| command
 ""
-function! please#Run (arguments) abort
+function! please#Run(arguments) abort
 	call s:PLUGIN.logger.Info(
 				\ 'Invoking please with arguments "%s"',
 				\ string(a:arguments))
@@ -20,7 +20,7 @@ function! please#Run (arguments) abort
 	call l:syscall.CallForeground(1, 0)
 endfunction
 
-function! please#Clean (arguments, ...) abort
+function! please#Clean(arguments, ...) abort
 	call s:PLUGIN.logger.Info(
 				\ 'Doing a please clean with arguments "%s"',
 				\ string(a:arguments))
@@ -30,7 +30,7 @@ function! please#Clean (arguments, ...) abort
 endfunction
 
 " please build the target under the cursor
-function! please#BuildThis () abort
+function! please#BuildThis() abort
 	let l:wordUnderCursor = expand('<cword>')
 	let l:currentFile = expand('<sfile>')
 	let l:buildTarget = l:currentFile . l:wordUnderCursor
