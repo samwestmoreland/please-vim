@@ -30,7 +30,7 @@ function! please#Clean(arguments, ...) abort
 endfunction
 
 " please build the target under the cursor
-function! please#BuildThis(arguments, ...) abort
+function! please#BuildThis() abort
 	let l:wordUnderCursor = expand('<cword>')
 	let l:currentFile = expand('<sfile>')
 	let l:buildTarget = l:currentFile . l:wordUnderCursor
