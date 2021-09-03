@@ -3,6 +3,8 @@
 let s:PLUGIN = maktaba#plugin#Get('please-vim')
 let g:please_vim_logger = maktaba#log#Logger('PLEASEVIMFILE')
 
+let s:repo_root = ''
+
 ""
 " @public
 " Execute a please command
@@ -13,14 +15,10 @@ function! please#Run(arguments, ...) abort
 				\ 'Invoking please with arguments "%s"',
 				\ string(a:arguments))
 	call s:Autowrite()
-	let l:executable = ['please']
-	call s:PLUGIN.logger.Debug('type of l:executable is "%s"', type(l:executable))
+	let executable = ['please']
+	call s:PLUGIN.logger.Debug('type of executable is "%s"', type(executable))
 	call s:PLUGIN.logger.Debug('type of a:arguments is "%s"', type(a:arguments))
-	echo 'type of l:executable is ' type(l:executable)
-	echo 'type of a:arguments is ' type(a:arguments)
-	echo 'type of split(a:arguments) is ' type(split(a:arguments))
-	echo 'adding the two lists: ' l:executable + split(a:arguments)
-	let l:syscall = maktaba#syscall#Create(l:executable + split(a:arguments))
+	let l:syscall = maktaba#syscall#Create(executable + a:arguments)
 	call l:syscall.CallForeground(1, 0)
 endfunction
 
@@ -35,16 +33,45 @@ endfunction
 
 " please build the target under the cursor
 function! please#BuildThis() abort
-	let l:wordUnderCursor = expand('<cword>')
-	let l:currentFile = expand('<sfile>')
-	let l:buildTarget = l:currentFile . l:wordUnderCursor
+	let wordUnderCursor = expand('<cword>')
 
-	echo 'Build target: ' l:buildTarget
+	" Construct build label
+	let repoRootPath = split(please#FindRepoRoot(), '/')
+	let currentFilePath = split(expand("%:p:h"), '/')
+	let depth = len(currentFilePath) - len(repoRootPath)
+	let buildLabel = '//' . join(currentFilePath[-depth:], '/') . ':' . wordUnderCursor
 
-	call s:PLUGIN.logger.Info('Got build target "%s"',
-				\ string(l:buildTarget))
+	call please#Run(['build', buildLabel])
+endfunction
 
-	call please#Run(l:buildTarget)
+" The idea here is to walk backwards up the directory tree until
+" we find a directory with a .plzconfig
+function! please#FindRepoRoot() abort
+	if s:repo_root !=# ''
+		return s:repo_root
+	endif
+
+	let currentDir = expand('%:p:h')
+	while 1
+		if !isdirectory(currentDir)
+			echo currentDir " isn\'t a directory. error!"
+			return
+		endif
+
+		" Now just take the current dir, whack .plzconfig on the end
+		" and ask if it's readable
+		if filereadable(currentDir . '/.plzconfig')
+			let s:repo_root = currentDir
+			return s:repo_root
+		endif
+
+		" Go up a directory
+		" Note this stuff probably only works on unix-like systems
+		let dirs = split(currentDir, '/')
+		let ndirs = len(dirs) - 2
+		let currentDir = '/' . join(dirs[0:ndirs], '/')
+	endwhile
+
 endfunction
 
 " Write files before calling Please
