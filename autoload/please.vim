@@ -37,7 +37,7 @@ function! please#BuildThis() abort
 
 	" Construct build label
 	let repoRootPath = split(please#FindRepoRoot(), '/')
-	let currentFilePath = split(expand("%:p:h"), '/')
+	let currentFilePath = split(expand('%:p:h'), '/')
 	let depth = len(currentFilePath) - len(repoRootPath)
 	let buildLabel = '//' . join(currentFilePath[-depth:], '/') . ':' . wordUnderCursor
 
@@ -59,7 +59,7 @@ function! please#FindRepoRoot() abort
 		endif
 
 		" Now just take the current dir, whack .plzconfig on the end
-		" and ask if it's readable
+		" and ask if it exists
 		if filereadable(currentDir . '/.plzconfig')
 			let s:repo_root = currentDir
 			return s:repo_root

@@ -5,7 +5,7 @@ if !s:enter
 	finish
 endif
 
-" Invoke please with a command
+" Invoke please with a command, e.g. |:Please test|
 command -nargs=* Please call please#Run([<f-args>])
 
 " Do 'please clean -f'
