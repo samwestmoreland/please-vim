@@ -8,7 +8,7 @@ let g:please_vim_logger = maktaba#log#Logger('PLEASEVIMFILE')
 " Execute a please command
 " Meant to be invoked by the |:Please| command
 ""
-function! please#Run(arguments) abort
+function! please#Run(arguments, ...) abort
 	call s:PLUGIN.logger.Info(
 				\ 'Invoking please with arguments "%s"',
 				\ string(a:arguments))
