@@ -16,6 +16,8 @@ function! please#Run(arguments) abort
 	let l:executable = ['please']
 	call s:PLUGIN.logger.Debug('type of l:executable is "%s"', type(l:executable))
 	call s:PLUGIN.logger.Debug('type of a:arguments is "%s"', type(a:arguments))
+	echo 'type of l:executable is ' type(l:executable)
+	echo 'type of a:arguments is ' type(a:arguments)
 	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
 	call l:syscall.CallForeground(1, 0)
 endfunction
