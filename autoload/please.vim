@@ -18,6 +18,7 @@ function! please#Run(arguments, ...) abort
 	call s:PLUGIN.logger.Debug('type of a:arguments is "%s"', type(a:arguments))
 	echo 'type of l:executable is ' type(l:executable)
 	echo 'type of a:arguments is ' type(a:arguments)
+	echo 'type of split(a:arguments) is ' type(split(a:arguments))
 	echo 'adding the two lists: ' l:executable + split(a:arguments)
 	let l:syscall = maktaba#syscall#Create(l:executable + split(a:arguments))
 	call l:syscall.CallForeground(1, 0)
