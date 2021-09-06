@@ -1,9 +1,6 @@
 # please-vim
 A vim plugin for please
 
-## Requirements
-At the moment this depends on google/vim-maktaba, but ultimately I don't think it should so I'll probably rip it out
-
 ## Installation
 Install with your favourite package manager
 
