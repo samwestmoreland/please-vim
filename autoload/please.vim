@@ -2,13 +2,19 @@
 
 let s:repo_root = ''
 
-""
-" @public
-" Execute a please command
-" Meant to be invoked by the |:Please| command
-""
+if !exists('s:terminal_disabled')
+	let s:terminal_disabled = 0
+endif
+
 function! s:Call(arguments, ...) abort
-	execute '!' . a:arguments
+	if !s:terminal_disabled && has('nvim')
+		let cmd = 'noautocmd new | terminal '
+	elseif !s:terminal_disabled && has('terminal')
+		let cmd = 'terminal '
+	else
+		let cmd = '!'
+	endif
+	execute cmd . a:arguments
 endfunction
 
 " Take a list of strings and concatenate them for execution
@@ -16,11 +22,14 @@ function! s:CreateCommand(l) abort
 	return join(a:l[:], ' ')
 endfunction
 
+""
+" @public
+" Execute a please command
+" Meant to be invoked by the |:Please| command
+""
 function! please#Run(arguments, ...) abort
 	call s:Autowrite()
 	let executable = ['please']
-	echo 'type of executable is ' type(executable)
-	echo 'type of a:arguments is ' type(a:arguments)
 	let syscall = s:CreateCommand(executable + a:arguments)
 	call s:Call(syscall)
 	"call l:syscall.CallForeground(1, 0)
