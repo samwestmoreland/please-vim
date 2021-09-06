@@ -6,7 +6,7 @@ if !exists('s:terminal_disabled')
 	let s:terminal_disabled = 0
 endif
 
-function! s:Call(arguments, ...) abort
+function! s:CallForeground(arguments, ...) abort
 	if !s:terminal_disabled && has('nvim')
 		let cmd = 'noautocmd new | terminal '
 	elseif !s:terminal_disabled && has('terminal')
@@ -31,15 +31,13 @@ function! please#Run(arguments, ...) abort
 	call s:Autowrite()
 	let executable = ['please']
 	let syscall = s:CreateCommand(executable + a:arguments)
-	call s:Call(syscall)
-	"call l:syscall.CallForeground(1, 0)
+	call s:CallForeground(syscall)
 endfunction
 
 function! please#Clean(arguments, ...) abort
 	echo 'Doing a please clean with arguments ' string(a:arguments)
-	let l:executable = ['please', 'clean']
-"	let l:syscall = maktaba#syscall#Create(l:executable + a:arguments)
-"	call l:syscall.Call(1, 0)
+	let syscall = s:CreateCommand(['please', 'clean', '-f'])
+	call s:CallForeground(syscall)
 endfunction
 
 " please build the target under the cursor
